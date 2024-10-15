@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,19 +36,21 @@ class ProductListScreen extends StatelessWidget {
     Product(name: "Mouse", price: 50.00),
   ];
 
+  ProductListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tienda'),
+        title: const Text('Tienda'),
         actions: [
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               // Navegar a la pantalla del carrito
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CartScreen()),
+                MaterialPageRoute(builder: (context) => const CartScreen()),
               );
             },
           ),
@@ -68,8 +70,7 @@ class ProductListScreen extends StatelessWidget {
 class ProductItem extends StatelessWidget {
   final Product product;
 
-
-  ProductItem({Key? key, required this.product}) : super(key: key);
+  const ProductItem({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,7 @@ class ProductItem extends StatelessWidget {
       title: Text(product.name),
       subtitle: Text("\$${product.price.toStringAsFixed(2)}"),
       trailing: IconButton(
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
         onPressed: () {
           // Agregar producto al carrito
           CartModel.of(context)?.addProduct(product);
@@ -91,18 +92,18 @@ class ProductItem extends StatelessWidget {
 class CartModel extends StatefulWidget {
   final Widget child;
 
-  CartModel({Key? key, required this.child}): super(key: key);
+  const CartModel({super.key, required this.child});
 
-  static _CartModelState? of(BuildContext context) {
-    return context.findAncestorStateOfType<_CartModelState>();
+  static CartModelState? of(BuildContext context) {
+    return context.findAncestorStateOfType<CartModelState>();
   }
 
   @override
-  _CartModelState createState() => _CartModelState();
+  CartModelState createState() => CartModelState();
 }
 
-class _CartModelState extends State<CartModel> {
-  List<Product> _cart = [];
+class CartModelState extends State<CartModel> {
+  final List<Product> _cart = [];
 
   void addProduct(Product product) {
     setState(() {
@@ -125,9 +126,9 @@ class _CartModelState extends State<CartModel> {
 
 // InheritedWidget para compartir el estado del carrito
 class InheritedCart extends InheritedWidget {
-  final _CartModelState data;
+  final CartModelState data;
 
-  InheritedCart({Key? key, required this.data, required Widget child}) : super(child: child);
+  const InheritedCart({super.key, required this.data, required super.child});
 
   @override
   bool updateShouldNotify(InheritedCart oldWidget) {
@@ -137,13 +138,17 @@ class InheritedCart extends InheritedWidget {
 
 // Pantalla del carrito de compras (Stateful)
 class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cartState = CartModel.of(context);
 
     return Scaffold(
+      // AppBar dont have a const constructor because it is a StatefulWidget
       appBar: AppBar(
-        title: Text('Carrito de Compras'),
+        // title have a const constructor because it is a StatelessWidget
+        title: const Text('Carrito de Compras'),
       ),
       body: cartState != null && cartState._cart.isNotEmpty
           ? ListView.builder(
@@ -156,7 +161,7 @@ class CartScreen extends StatelessWidget {
           );
         },
       )
-          : Center(
+          : const Center(
         child: Text('El carrito está vacío'),
       ),
       bottomNavigationBar: cartState != null && cartState._cart.isNotEmpty
@@ -164,7 +169,7 @@ class CartScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Text(
           'Total: \$${cartState.totalPrice.toStringAsFixed(2)}',
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
         ),
       )
           : null,

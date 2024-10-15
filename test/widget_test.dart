@@ -14,7 +14,7 @@ void main() {
     testWidgets('Counter increments smoke test', (WidgetTester tester) async {
       // Build our app and trigger a frame.
       //Quitarle el const a la clase MyApp para que no sea constante y se evite el error
-      await tester.pumpWidget(MyApp());
+      await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
     // Verify that our counter starts at 0.
