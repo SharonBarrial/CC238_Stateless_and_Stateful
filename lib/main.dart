@@ -8,13 +8,14 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Carrito de Compras',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ProductListScreen(),
-    );
+    return CartModel( // CartModel is the InheritedWidget
+        child: MaterialApp(
+          title: 'Carrito de Compras',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+          ),
+          home: ProductListScreen(),
+        ));
   }
 }
 
@@ -42,10 +43,20 @@ class ProductListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tienda'),
+        title: const Text('Sharon Store'),
+        backgroundColor: Colors.deepPurple,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          textBaseline: TextBaseline.ideographic,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
+            iconSize: 35,
+            color: Colors.white,
             onPressed: () {
               // Navegar a la pantalla del carrito
               Navigator.push(
